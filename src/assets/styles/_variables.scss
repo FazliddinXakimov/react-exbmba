@@ -1,0 +1,31 @@
+// src/styles/_variables.scss
+:root {
+    /* Colors */
+    --primary-color: #4f9e91;
+    --light-primary-color: #4f9e91;
+    --secondary-color: #d1d5db;
+    --warning-color: #f97316;
+    --background-color: #f8f9fa;
+    --dark-gray: #444444;
+
+    /* Font Sizes */
+    --font-size-sm: 12px;
+    --font-size-md: 16px;
+    --font-size-lg: 20px;
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+
+    /* Breakpoints */
+    --screen-sm: 640px;
+    --screen-md: 768px;
+    --screen-lg: 1024px;
+
+    // Heights
+    --navbar-height: 70px;
+    --bottom-navigation-height: 80px;
+}
