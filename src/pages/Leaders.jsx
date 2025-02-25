@@ -1,3 +1,16 @@
+import React from "react";
+import BaseSelect from "../components/BaseComponents/BaseSelect";
+
 export default function Home() {
-  return <h1>Leaders</h1>;
+  const options = [
+    {
+      firstName: "Fazliddin",
+    },
+  ];
+
+  return (
+    <>
+      <BaseSelect options={options} name="firstName" />
+    </>
+  );
 }

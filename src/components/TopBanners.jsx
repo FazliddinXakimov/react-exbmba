@@ -4,7 +4,7 @@ import BannersSwiper from "./BannersSwiper";
 const TopBanners = ({ banners = [] }) => {
   return (
     <>
-      <BannersSwiper banners={banners} />
+      <BannersSwiper className="top-banners" banners={banners} />
     </>
   );
 };
