@@ -8,8 +8,14 @@ import BaseButton from "../../components/BaseComponents/BaseButton";
 
 const schema = yup
   .object({
-    firstName: yup.string().required("First name is required"),
-    age: yup.number().positive().integer().required("Age is required"),
+    phone: yup
+      .string()
+      .matches(/^\+998 \d{2} \d{3} \d{2} \d{2}$/, "Invalid phone number format")
+      .required("Phone number is required"),
+    password: yup
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
   })
   .required();
 
@@ -22,7 +28,7 @@ export default function App() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => console.log("Form Data:", data);
 
   return (
     <LoginWrapper>
@@ -32,9 +38,11 @@ export default function App() {
         <BaseInput
           label="Phone"
           name="phone"
+          type="tel"
           register={register}
           error={errors.phone}
         />
+
         <BaseInput
           label="Password"
           name="password"
@@ -53,11 +61,18 @@ export default function App() {
 
 const LoginWrapper = styled.div`
   margin-top: 20px;
+
   .login-title {
     font-weight: 600;
     font-size: var(--font-size-lg);
     text-align: center;
     margin-bottom: 30px;
+  }
+
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
   }
 
   button {

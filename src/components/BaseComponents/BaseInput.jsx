@@ -5,13 +5,34 @@ import EyeSlash from "../../assets/images/eye-slash.png";
 
 const InputField = ({ label, name, register, error, type = "text" }) => {
   const [togglePassword, setTogglePassword] = useState(false);
+  const [value, setValue] = useState("");
+
+  const formatPhoneNumber = (input) => {
+    // Remove non-digits
+    let numbers = input.replace(/\D/g, "");
+
+    // Ensure max length of 12 (including country code)
+    if (numbers.length > 12) numbers = numbers.slice(0, 12);
+
+    // Format: +998 XX XXX XX XX
+    let formatted = "+998 ";
+    if (numbers.length > 3) formatted += numbers.slice(3, 5) + " ";
+    if (numbers.length > 5) formatted += numbers.slice(5, 8) + " ";
+    if (numbers.length > 8) formatted += numbers.slice(8, 10) + " ";
+    if (numbers.length > 10) formatted += numbers.slice(10, 12);
+
+    return formatted;
+  };
+
+  const handleChange = (e) => {
+    const formattedValue = formatPhoneNumber(e.target.value);
+    setValue(formattedValue);
+  };
 
   const getType = () => {
-    if (type == "password") {
-      if (togglePassword) return "password";
-      return "text";
+    if (type === "password") {
+      return togglePassword ? "text" : "password";
     }
-
     return type;
   };
 
@@ -22,16 +43,22 @@ const InputField = ({ label, name, register, error, type = "text" }) => {
   return (
     <InputFieldWrapper>
       <label>{label}</label>
-      <input {...register(name)} type={getType()} />
-      {type == "password" && (
+      <input
+        {...register(name)}
+        type={getType()}
+        value={type === "tel" ? value : undefined}
+        onChange={type === "tel" ? handleChange : undefined}
+        placeholder={type === "tel" ? "+998 XX XXX XX XX" : ""}
+      />
+      {type === "password" && (
         <img
           onClick={handleTogglePassword}
           src={togglePassword ? Eye : EyeSlash}
           className="password-toggler"
+          alt="Toggle Password"
         />
       )}
-
-      {error && <div className="error-message">{error.messsage}</div>}
+      {error && <div className="error-message">{error.message}</div>}
     </InputFieldWrapper>
   );
 };
@@ -52,16 +79,9 @@ const InputFieldWrapper = styled.div`
     border-radius: var(--radius-md);
     outline: none;
     padding: 0 10px;
-
     height: 36px;
     width: 100%;
     border: 1px solid var(--slate-color);
-  }
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
   }
 
   .error-message {
@@ -74,5 +94,6 @@ const InputFieldWrapper = styled.div`
     top: 39px;
     right: 10px;
     height: 18px;
+    cursor: pointer;
   }
 `;
