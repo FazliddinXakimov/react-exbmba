@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBanners, getTestTypes } from "../store/actions/referencesActions";
 import styled from "styled-components";
 import InfoImg from "../assets/images/info.png";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -43,9 +44,9 @@ export default function Home() {
   // );
 
   return (
-    <>
+    <> 
       <TopBanners banners={topBanners} />
-
+      <Link to="/auth/login">HIIII</Link>
       <PremiumTestsList>
         <div className="title">
           <div className="title-text">Premium test</div>

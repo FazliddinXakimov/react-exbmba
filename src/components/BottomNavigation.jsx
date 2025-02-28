@@ -3,8 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import HomeImg from "../assets/images/home.png";
 import TestIcon from "../assets/images/test-list.png";
+import TestIconActive from "../assets/images/test-list-active.png";
 import Leaders from "../assets/images/leaders.png";
+import LeadersActive from "../assets/images/leaders-active.png";
+
 import Profile from "../assets/images/profile.png";
+import ProfileActive from "../assets/images/profile-active.png";
+
+import HomeImgActive from "../assets/images/home-active.png";
 
 const BottomNavigation = () => {
   const location = useLocation();
@@ -17,22 +23,28 @@ const BottomNavigation = () => {
   return (
     <BottomNav>
       <NavItem to="/" className={isActive("/") ? "active" : ""}>
-        <img src={HomeImg} alt="Home" />
+        <img src={isActive("/") ? HomeImgActive : HomeImg} alt="Home" />
         <div>Home</div>
       </NavItem>
       <NavItem to="/tests" className={isActive("/tests") ? "active" : ""}>
-        <img src={TestIcon} alt="Test" />
+        <img src={isActive("/tests") ? TestIconActive : TestIcon} alt="Test" />
         <div>Test</div>
       </NavItem>
       <NavItem to="/leaders" className={isActive("/leaders") ? "active" : ""}>
-        <img src={Leaders} alt="Leaders" />
+        <img
+          src={isActive("/leaders") ? LeadersActive : Leaders}
+          alt="Leaders"
+        />
         <div>Leaders</div>
       </NavItem>
       <NavItem
-        to="/profile/user-information"
         className={isActive("/profile") ? "active" : ""}
+        to="/profile/user-information"
       >
-        <img src={Profile} alt="Profile" />
+        <img
+          src={isActive("/profile") ? ProfileActive : Profile}
+          alt="Profile"
+        />
         <div>Profile</div>
       </NavItem>
     </BottomNav>
@@ -69,22 +81,14 @@ const NavItem = styled(Link)`
   justify-content: center;
   font-size: var(--font-size-sm);
   transition: background-color 0.3s ease, transform 0.3s ease;
+  font-weight: 600;
 
   img {
     height: 24px;
     transition: transform 0.3s ease;
   }
 
-  &:hover {
-    background-color: var(--light-primary-color);
-    /* transform: scale(1.05); */
-  }
-
   &.active {
-    background-color: var(--light-primary-color);
-
-    /* img {
-      transform: scale(1.1);
-    } */
+    color: var(--primary-color);
   }
 `;
