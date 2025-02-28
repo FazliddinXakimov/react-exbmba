@@ -5,6 +5,7 @@ import * as yup from "yup";
 import BaseInput from "../../components/BaseComponents/BaseInput";
 import styled from "styled-components";
 import BaseButton from "../../components/BaseComponents/BaseButton";
+import { Link } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -23,17 +24,23 @@ export default function App() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
+    setValue,
+    watch,
+    trigger,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => console.log("Form Data:", data);
+  const onSubmit = (data) => {
+    console.log("Form Data:", data);
+  };
 
   return (
     <LoginWrapper>
       <div className="login-title">Welcome to our Platform!</div>
 
+      <div>{isSubmitted}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <BaseInput
           label="Phone"
@@ -41,6 +48,10 @@ export default function App() {
           type="tel"
           register={register}
           error={errors.phone}
+          setValue={setValue}
+          watch={watch}
+          trigger={trigger}
+          isSubmitted={isSubmitted}
         />
 
         <BaseInput
@@ -49,11 +60,22 @@ export default function App() {
           type="password"
           register={register}
           error={errors.password}
+          setValue={setValue}
+          watch={watch}
+          trigger={trigger}
+          isSubmitted={isSubmitted}
         />
 
         <BaseButton className="submit-btn" type="submit">
-          Submit
+          Login
         </BaseButton>
+
+        <div className="to-register">
+          If you have not account, please{" "}
+          <Link to="/auth/register" className="to-register">
+            register
+          </Link>
+        </div>
       </form>
     </LoginWrapper>
   );
@@ -79,5 +101,16 @@ const LoginWrapper = styled.div`
     width: 100%;
     margin-top: 30px;
     background: var(--primary-color);
+  }
+
+  .to-register {
+    text-align: center;
+    margin-top: 15px;
+    font-size: var(--font-size-md);
+    a {
+      color: var(--blue-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
   }
 `;
