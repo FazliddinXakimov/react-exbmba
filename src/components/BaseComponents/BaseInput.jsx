@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { IMaskInput } from "react-imask";
 import Eye from "../../assets/images/eye.png";
 import EyeSlash from "../../assets/images/eye-slash.png";
 
@@ -16,41 +17,34 @@ const InputField = ({
 }) => {
   const [togglePassword, setTogglePassword] = useState(false);
 
-  const formatPhoneNumber = (input) => {
-    let numbers = input.replace(/\D/g, "").slice(0, 12);
-   
-    let formatted = "+998 ";
-    if (numbers.length > 3) formatted += numbers.slice(3, 5) + " ";
-    if (numbers.length > 5) formatted += numbers.slice(5, 8) + " ";
-    if (numbers.length > 8) formatted += numbers.slice(8, 10) + " ";
-    if (numbers.length > 10) formatted += numbers.slice(10, 12);
-    return formatted;
-  };
-
-  const handleChange = (e) => {
-    if (type === "tel") {
-      const formattedValue = formatPhoneNumber(e.target.value);
-      setValue(name, formattedValue);
-    } else {
-      setValue(name, e.target.value);
-    }
-
+  const handleMaskedChange = (value) => {
+    setValue(name, value);
     if (isSubmitted) {
       trigger(name);
     }
   };
 
+  const getMask = (type) => {
+    return type === "tel" ? "+998 00 000 00 00" : /.*/;
+  };
+
+  const getPlaceholder = (type) => {
+    return type === "tel" ? "+998 XX XXX XX XX" : "";
+  };
+
   return (
     <InputFieldWrapper>
       <label>{label}</label>
-      <input
-        {...register(name)}
+      <IMaskInput
+        mask={getMask()}
+        lazy={false}
+        value={watch(name) || ""}
+        onAccept={handleMaskedChange}
+        inputRef={(el) => register(name).ref(el)}
+        placeholder={getPlaceholder(type)}
         type={
           type === "password" ? (togglePassword ? "text" : "password") : type
         }
-        value={watch(name) || ""}
-        onChange={handleChange}
-        placeholder={type === "tel" ? "+998 XX XXX XX XX" : ""}
       />
       {type === "password" && (
         <img
