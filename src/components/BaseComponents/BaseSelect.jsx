@@ -1,6 +1,7 @@
 import React from "react";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
+import styled from "styled-components";
 
 const BaseSelect = ({
   className,
@@ -27,7 +28,7 @@ const BaseSelect = ({
   onChange,
 }) => {
   return (
-    <div>
+    <BaseSelectWrapper>
       {label && <label htmlFor={name}>{label}</label>}
       <Controller
         name={name}
@@ -35,6 +36,7 @@ const BaseSelect = ({
         render={({ field }) => (
           <Select
             {...field}
+            styles={customStyles}
             className={className}
             defaultValue={defaultValue}
             isDisabled={isDisabled}
@@ -55,9 +57,45 @@ const BaseSelect = ({
           />
         )}
       />
-      {error && <p className="error">{error.message}</p>}
-    </div>
+      {error && <p className="error-message">{error.message}</p>}
+    </BaseSelectWrapper>
   );
 };
 
 export default BaseSelect;
+
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    borderRadius: "var(--radius-md)",
+    border: state.isFocused
+      ? "1px solid var(--primary-color)"
+      : "1px solid #ccc",
+    boxShadow: "none",
+    "&:hover": {
+      border: "1px solid var(--primary-color)",
+    },
+    height: "36px",
+    minHeight: "36px",
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: "var(--slate-color)",
+    height: "36px",
+  }),
+};
+
+const BaseSelectWrapper = styled.div`
+  margin-bottom: 10px;
+  label {
+    display: block;
+    font-size: var(--font-size-md);
+    margin-bottom: 4px;
+  }
+
+  .error-message {
+    color: var(--danger-color);
+    margin-top: 4px;
+    font-size: var(--font-size-sm);
+  }
+`;

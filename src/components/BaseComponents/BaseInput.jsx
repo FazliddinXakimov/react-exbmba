@@ -18,6 +18,7 @@ const InputField = ({
 
   const formatPhoneNumber = (input) => {
     let numbers = input.replace(/\D/g, "").slice(0, 12);
+   
     let formatted = "+998 ";
     if (numbers.length > 3) formatted += numbers.slice(3, 5) + " ";
     if (numbers.length > 5) formatted += numbers.slice(5, 8) + " ";
@@ -83,6 +84,10 @@ const InputFieldWrapper = styled.div`
     height: 36px;
     width: 100%;
     border: 1px solid var(--slate-color);
+  }
+
+  input:focus {
+    border: 1px solid var(--primary-color);
   }
 
   .error-message {
