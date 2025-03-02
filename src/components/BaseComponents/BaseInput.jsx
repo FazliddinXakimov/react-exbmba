@@ -36,7 +36,7 @@ const InputField = ({
     <InputFieldWrapper>
       <label>{label}</label>
       <IMaskInput
-        mask={getMask()}
+        mask={getMask(type)}
         lazy={false}
         value={watch(name) || ""}
         onAccept={handleMaskedChange}

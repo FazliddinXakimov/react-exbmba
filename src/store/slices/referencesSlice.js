@@ -1,9 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBanners, getTestTypes } from "../actions/referencesActions";
+import {
+  getBanners,
+  getSelections,
+  getSubjects,
+  getTestTypes,
+} from "../actions/referencesActions";
+import {
+  BANNER_TYPES,
+  SELECTION_API_TYPES,
+  SUBJECT_API_TYPES,
+} from "../../utils/constants";
 
 const initialState = {
-  banners: [],
   testTypes: [],
+  englishTests: [],
+  olympicTests: [],
+  subjects: [],
+  topBanners: [],
+  middleBanners: [],
+  middleBelowBanners: [],
   loading: false,
   error: null,
 };
@@ -15,7 +30,6 @@ const referencesSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-
       // GET BANNERS
       .addCase(getBanners.pending, (state) => {
         state.loading = true;
@@ -23,7 +37,14 @@ const referencesSlice = createSlice({
       })
       .addCase(getBanners.fulfilled, (state, action) => {
         state.loading = false;
-        state.banners = action.payload;
+
+        if (action.payload.apiType === BANNER_TYPES.TOP) {
+          state.topBanners = action.payload.response;
+        } else if (action.payload.apiType === BANNER_TYPES.MIDDLE) {
+          state.middleBanners = action.payload.response;
+        } else if (action.payload.apiType === BANNER_TYPES.MIDDLE_BELOW) {
+          state.middleBelowBanners = action.payload.response;
+        }
       })
       .addCase(getBanners.rejected, (state, action) => {
         state.loading = false;
@@ -40,6 +61,40 @@ const referencesSlice = createSlice({
         state.testTypes = action.payload;
       })
       .addCase(getTestTypes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // GET SELECTOINS
+      .addCase(getSelections.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getSelections.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload.apiType === SELECTION_API_TYPES.ENGLISH) {
+          state.englishTests = action.payload.response;
+        } else if (action.payload.apiType === SELECTION_API_TYPES.OLYMPIC) {
+          state.olympicTests = action.payload.response;
+        }
+      })
+      .addCase(getSelections.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // GET_SUBJECTS
+      .addCase(getSubjects.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getSubjects.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload.apiType === SUBJECT_API_TYPES.SUBJECTS) {
+          state.subjects = action.payload.response;
+        }
+      })
+      .addCase(getSubjects.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

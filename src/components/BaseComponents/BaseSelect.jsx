@@ -23,10 +23,18 @@ const BaseSelect = ({
   error,
 
   getOptionValue,
-  getOptionLabel,
-
-  onChange,
 }) => {
+  const getValue = (value) => {
+    const selectValue =
+      options.find((option) => getOptionValue(option) === value) || null;
+
+    return selectValue;
+  };
+
+  const handelChange = (selected, changeFunc) => {
+    changeFunc(selected ? getOptionValue(selected) : "");
+  };
+
   return (
     <BaseSelectWrapper>
       {label && <label htmlFor={name}>{label}</label>}
@@ -38,6 +46,7 @@ const BaseSelect = ({
             {...field}
             styles={customStyles}
             className={className}
+            value={getValue(field.value)}
             defaultValue={defaultValue}
             isDisabled={isDisabled}
             isLoading={isLoading}
@@ -51,9 +60,7 @@ const BaseSelect = ({
             aria-invalid={!!error}
             menuPlacement={menuPlacement}
             noOptionsMessage={() => noOptionsMessage}
-            getOptionValue={getOptionValue}
-            getOptionLabel={getOptionLabel}
-            onChange={onChange}
+            onChange={(selected) => handelChange(selected, field.onChange)}
           />
         )}
       />

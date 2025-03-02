@@ -6,6 +6,8 @@ import BaseInput from "../../components/BaseComponents/BaseInput";
 import styled from "styled-components";
 import BaseButton from "../../components/BaseComponents/BaseButton";
 import { Link } from "react-router-dom";
+import { login } from "../../store/actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const schema = yup
   .object({
@@ -20,7 +22,10 @@ const schema = yup
   })
   .required();
 
-export default function App() {
+export default function Login() {
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.user.loading);
+
   const {
     register,
     handleSubmit,
@@ -32,15 +37,25 @@ export default function App() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+  const onSubmit = async (data) => {
+    const exportData = {
+      phone: data.phone.split(" ").join(""),
+      password: data.password,
+    };
+
+    const response = await dispatch(login(exportData));
+
+    if (login.fulfilled.match(response)) {
+      //
+    } else if (login.rejected.match(response)) {
+      //
+    }
   };
 
   return (
     <LoginWrapper>
       <div className="login-title">Welcome to our Platform!</div>
-
-      <div>{isSubmitted}</div>
+      <div>{loading}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <BaseInput
           label="Phone"
@@ -66,7 +81,7 @@ export default function App() {
           isSubmitted={isSubmitted}
         />
 
-        <BaseButton className="submit-btn" type="submit">
+        <BaseButton loading={loading} className="submit-btn" type="submit">
           Login
         </BaseButton>
 

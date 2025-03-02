@@ -90,11 +90,7 @@ export default function Register() {
           name="region"
           label="Region"
           getOptionValue={(option) => option.value}
-          getOptionLabel={(option)=>option.label}
-          onChange={(selected) => {
-            setValue("region", selected?.value || "");
-            trigger("region");
-          }}
+          getOptionLabel={(option) => option.label}
           options={regionOptions}
           control={control}
           setValue={setValue}

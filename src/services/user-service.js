@@ -1,6 +1,5 @@
 import axios from "@/services/axios";
 
-
 class UserService {
   async refreshToken(data) {
     const response = await axios.post("/users/refresh-token", data);

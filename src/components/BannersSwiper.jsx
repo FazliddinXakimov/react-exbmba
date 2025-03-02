@@ -8,12 +8,12 @@ const StyledImage = styled.img`
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 8px; /* Example: Rounded corners */
 `;
 
-const BannersSwiper = ({ banners = [] }) => {
+const BannersSwiper = ({ banners = [], className }) => {
   return (
     <Swiper
+      className={className}
       slidesPerView={1} // ✅ Fixed prop name
       spaceBetween={0}
       pagination={{ clickable: true }}

@@ -3,10 +3,10 @@ import ReferencesService from "../../services/references-service";
 
 export const getBanners = createAsyncThunk(
   "references/GET_BANNERS",
-  async (params, { rejectWithValue }) => {
+  async ({ apiType, params }, { rejectWithValue }) => {
     try {
       const response = await ReferencesService.getBanners(params);
-      return response;
+      return { apiType, response };
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch banners");
     }
@@ -21,6 +21,34 @@ export const getTestTypes = createAsyncThunk(
       return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch banners");
+    }
+  }
+);
+
+export const getSelections = createAsyncThunk(
+  "references/GET_SELECTIONS",
+  async ({ apiType, params }, { rejectWithValue }) => {
+    try {
+      const response = await ReferencesService.getSelections(params);
+      return { response, apiType };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "Failed to fetch selections"
+      );
+    }
+  }
+);
+
+export const getSubjects = createAsyncThunk(
+  "references/GET_SUBJECTS",
+  async ({ apiType, params }, { rejectWithValue }) => {
+    try {
+      const response = await ReferencesService.getSubjects(params);
+      return { apiType, response };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "Failed to fetch subjects"
+      );
     }
   }
 );
