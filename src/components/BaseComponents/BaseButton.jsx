@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 
-const BaseButton = ({ children, type = "button", className, isLoading }) => {
+const BaseButton = ({
+  children,
+  className,
+  type = "button",
+  color = "primary",
+  isLoading = false,
+  isOutline = false,
+  fullwidth = false,
+}) => {
   const [ripples, setRipples] = useState([]);
 
   const addRipple = (event) => {
@@ -24,12 +32,26 @@ const BaseButton = ({ children, type = "button", className, isLoading }) => {
     }, 600);
   };
 
+  const getColor = () => {
+    switch (color) {
+      case "secondary":
+        return "var(--secondary-color)";
+      case "danger":
+        return "var(--danger-color)";
+      default:
+        return "var(--primary-color)";
+    }
+  };
+
   return (
     <ButtonWrapper
       className={className}
       type={type}
       onClick={addRipple}
       disabled={isLoading}
+      color={getColor()}
+      $isOutline={isOutline} // Fixed: Prefixed with $
+      $fullwidth={fullwidth} // Fixed: Prefixed with $
     >
       {isLoading ? <Spinner /> : children}
       {ripples.map((ripple) => (
@@ -63,12 +85,16 @@ const ButtonWrapper = styled.button`
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-md);
-  border: none;
   cursor: pointer;
   text-align: center;
-  color: white;
+  color: ${({ $isOutline, color }) => ($isOutline ? color : "white")};
   height: 36px;
-  background-color: #007bff;
+  width: ${({ $fullwidth }) => ($fullwidth ? "100%" : "auto")}; /* Fixed */
+  padding: 0 8px;
+  background-color: ${({ $isOutline, color }) =>
+    $isOutline ? "transparent" : color};
+  border: ${({ $isOutline, color }) =>
+    $isOutline ? `2px solid ${color}` : "none"};
   display: flex;
   align-items: center;
   justify-content: center;

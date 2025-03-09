@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login } from "../actions/userActions";
+import { getMe, login } from "../actions/userActions";
 import { setAccessToken, setRefreshToken } from "../../utils/localeStorages";
 
 const initialState = {
-  user: null,
-  banners: [],
+  user: {},
   loading: false,
   error: null,
 };
@@ -12,9 +11,14 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.user = {};
+    },
+  },
 
   extraReducers: (builder) => {
+    // login
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -23,11 +27,8 @@ const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
 
-        if (!action.payload.success) {
-          console.log("action.payloat", action.payload);
-        } else {
+        if (!action.payload.error_key) {
           const { access, refresh } = action.payload;
-
           setAccessToken(access);
           setRefreshToken(refresh);
         }
@@ -35,6 +36,20 @@ const userSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      //getMe
+      .addCase(getMe.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("action.payload", action.payload);
+        state.user = action.payload;
+      })
+      .addCase(getMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action;
       });
   },
 });

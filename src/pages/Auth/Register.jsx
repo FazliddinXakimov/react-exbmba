@@ -53,6 +53,12 @@ export default function Register() {
   return (
     <LoginWrapper>
       <div className="login-title">Welcome to our Platform!</div>
+      <div className="to-login">
+        Already have an account?{" "}
+        <Link to="/auth/login" className="to-register">
+          Sign in
+        </Link>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <BaseInput
           label="Phone"
@@ -125,13 +131,6 @@ export default function Register() {
         <BaseButton className="submit-btn" type="submit">
           Register
         </BaseButton>
-        <div className="to-login">
-          If you have an account
-          <Link to="/auth/login" className="to-register">
-            {" "}
-            login{" "}
-          </Link>
-        </div>
       </form>
     </LoginWrapper>
   );
@@ -143,7 +142,18 @@ const LoginWrapper = styled.div`
     font-weight: 600;
     font-size: var(--font-size-lg);
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+  }
+
+  .to-login {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: var(--font-size-md);
+    a {
+      color: var(--blue-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
   }
   .error {
     color: red;
@@ -154,16 +164,5 @@ const LoginWrapper = styled.div`
     width: 100%;
     margin-top: 30px;
     background: var(--primary-color);
-  }
-  .to-login {
-    text-align: center;
-    margin-bottom: 30px;
-    margin-top: 15px;
-    font-size: var(--font-size-md);
-    a {
-      color: var(--blue-color);
-      cursor: pointer;
-      text-decoration: none;
-    }
   }
 `;

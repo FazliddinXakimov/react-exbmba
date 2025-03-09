@@ -2,7 +2,7 @@ const ACCESS_TOKEN = "ACCESS_TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
 
 export const setAccessToken = (value) => {
-  localStorage.setItem(ACCESS_TOKEN, value);
+  return localStorage.setItem(ACCESS_TOKEN, value);
 };
 
 export const getAccessToken = () => {

@@ -5,8 +5,8 @@ import * as yup from "yup";
 import BaseInput from "../../components/BaseComponents/BaseInput";
 import styled from "styled-components";
 import BaseButton from "../../components/BaseComponents/BaseButton";
-import { Link } from "react-router-dom";
-import { login } from "../../store/actions/userActions";
+import { Link, useNavigate } from "react-router-dom";
+import { getMe, login } from "../../store/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const schema = yup
@@ -25,6 +25,7 @@ const schema = yup
 export default function Login() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.user.loading);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -46,6 +47,8 @@ export default function Login() {
     const response = await dispatch(login(exportData));
 
     if (login.fulfilled.match(response)) {
+      await dispatch(getMe());
+      navigate("/", { replace: true });
       //
     } else if (login.rejected.match(response)) {
       //
@@ -54,7 +57,13 @@ export default function Login() {
 
   return (
     <LoginWrapper>
-      <div className="login-title">Welcome to our Platform!</div>
+      <div className="login-title">Login</div>
+      <div className="to-register">
+        Dont have an account?{" "}
+        <Link to="/auth/register" className="to-register">
+          Sign up
+        </Link>
+      </div>
       <div>{loading}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <BaseInput
@@ -81,16 +90,15 @@ export default function Login() {
           isSubmitted={isSubmitted}
         />
 
+        <div className="forgot-password">
+          <Link className="forgot-password" to="/auth/forgot-password">
+            Forgot password?
+          </Link>
+        </div>
+
         <BaseButton loading={loading} className="submit-btn" type="submit">
           Login
         </BaseButton>
-
-        <div className="to-register">
-          If you have not account, please{" "}
-          <Link to="/auth/register" className="to-register">
-            register
-          </Link>
-        </div>
       </form>
     </LoginWrapper>
   );
@@ -103,7 +111,21 @@ const LoginWrapper = styled.div`
     font-weight: 600;
     font-size: var(--font-size-lg);
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+  }
+  .to-register {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: var(--font-size-md);
+    a {
+      color: var(--blue-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
+  .forgot-password {
+    color: var(--blue-color);
   }
 
   .error {
@@ -116,16 +138,5 @@ const LoginWrapper = styled.div`
     width: 100%;
     margin-top: 30px;
     background: var(--primary-color);
-  }
-
-  .to-register {
-    text-align: center;
-    margin-top: 15px;
-    font-size: var(--font-size-md);
-    a {
-      color: var(--blue-color);
-      cursor: pointer;
-      text-decoration: none;
-    }
   }
 `;
