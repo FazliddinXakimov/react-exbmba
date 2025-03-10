@@ -11,9 +11,12 @@ import Profile from "../assets/images/profile.png";
 import ProfileActive from "../assets/images/profile-active.png";
 
 import HomeImgActive from "../assets/images/home-active.png";
+import { useSelector } from "react-redux";
 
 const BottomNavigation = () => {
   const location = useLocation();
+
+  const isLoggedId = useSelector((state) => state.user.isLoggedIn);
 
   const isActive = (currentPath) => {
     if (currentPath === "/") return location.pathname === "/";
@@ -39,7 +42,7 @@ const BottomNavigation = () => {
       </NavItem>
       <NavItem
         className={isActive("/profile") ? "active" : ""}
-        to="/profile/user-information"
+        to={isLoggedId ? "/profile/user-information" : "/auth/login"}
       >
         <img
           src={isActive("/profile") ? ProfileActive : Profile}

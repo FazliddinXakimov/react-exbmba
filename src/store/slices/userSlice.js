@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMe, login } from "../actions/userActions";
+import { getLeaders, getMe, login } from "../actions/userActions";
 import { setAccessToken, setRefreshToken } from "../../utils/localeStorages";
 
 const initialState = {
   user: {},
+  leaders: {
+    results: [],
+    count: 0,
+  },
+  isLoggedIn: false,
   loading: false,
   error: null,
 };
@@ -12,8 +17,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logout: (state) => {
+    resetAuth: (state) => {
       state.user = {};
+      state.isLoggedIn = false;
     },
   },
 
@@ -44,15 +50,28 @@ const userSlice = createSlice({
       })
       .addCase(getMe.fulfilled, (state, action) => {
         state.loading = false;
-        console.log("action.payload", action.payload);
         state.user = action.payload;
+        state.isLoggedIn = Object.keys(action.payload).length > 0;
       })
       .addCase(getMe.rejected, (state, action) => {
         state.loading = false;
         state.error = action;
+      })
+      // getLeaders
+      .addCase(getLeaders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getLeaders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.leaders = { ...action.payload };
+      })
+      .addCase(getLeaders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-// export const {} = userSlice.actions;
+export const { resetAuth } = userSlice.actions;
 export default userSlice.reducer;

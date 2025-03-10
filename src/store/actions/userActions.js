@@ -1,5 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "../../services/user-service";
+import {
+  deleteAccessToken,
+  deleteRefreshToken,
+  getRefreshToken,
+} from "../../utils/localeStorages";
+import { resetAuth } from "../slices/userSlice";
 
 export const login = createAsyncThunk(
   "user/LOGIN",
@@ -22,6 +28,35 @@ export const getMe = createAsyncThunk(
       return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Login failed");
+    }
+  }
+);
+
+export const getLeaders = createAsyncThunk(
+  "user/GET_LEADERS",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userService.getLeaders(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "get leaders failed");
+    }
+  }
+);
+
+export const logout = createAsyncThunk(
+  "user/LOGOUT",
+  async (isHandle = false, { dispatch, rejectWithValue }) => {
+    try {
+      if (isHandle) {
+        await userService.logout({ refresh: getRefreshToken() });
+      }
+      deleteRefreshToken();
+      deleteAccessToken();
+      dispatch(resetAuth()); // Make sure it's imported properly
+    } catch (error) {
+      console.error("Logout failed:", error);
+      return rejectWithValue(error.response?.data || "Logout failed");
     }
   }
 );

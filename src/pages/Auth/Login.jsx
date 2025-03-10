@@ -24,7 +24,7 @@ const schema = yup
 
 export default function Login() {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.user.loading);
+  const loading = useSelector((state) => state.user.loading);
   const navigate = useNavigate();
 
   const {
@@ -95,8 +95,7 @@ export default function Login() {
             Forgot password?
           </Link>
         </div>
-
-        <BaseButton loading={loading} className="submit-btn" type="submit">
+        <BaseButton isLoading={loading} className="submit-btn" type="submit">
           Login
         </BaseButton>
       </form>

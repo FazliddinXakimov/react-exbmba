@@ -9,18 +9,29 @@ const BaseButton = ({
   isLoading = false,
   isOutline = false,
   fullwidth = false,
+
+  onClick,
 }) => {
   const [ripples, setRipples] = useState([]);
 
-  const addRipple = (event) => {
+  const handleClick = (event) => {
     if (isLoading) return;
 
+    addRipple(event);
+
+    if (onClick) {
+      onClick(event);
+    }
+  };
+
+  const addRipple = (event) => {
     const button = event.currentTarget;
+    const rect = button.getBoundingClientRect();
     const diameter = Math.max(button.clientWidth, button.clientHeight);
     const radius = diameter / 2;
 
-    const x = event.clientX - button.offsetLeft - radius;
-    const y = event.clientY - button.offsetTop - radius;
+    const x = event.clientX - rect.left - radius;
+    const y = event.clientY - rect.top - radius;
 
     const newRipple = { id: Date.now(), x, y, size: diameter };
     setRipples((prevRipples) => [...prevRipples, newRipple]);
@@ -47,11 +58,11 @@ const BaseButton = ({
     <ButtonWrapper
       className={className}
       type={type}
-      onClick={addRipple}
+      onClick={handleClick}
       disabled={isLoading}
       color={getColor()}
-      $isOutline={isOutline} // Fixed: Prefixed with $
-      $fullwidth={fullwidth} // Fixed: Prefixed with $
+      $isOutline={isOutline}
+      $fullwidth={fullwidth}
     >
       {isLoading ? <Spinner /> : children}
       {ripples.map((ripple) => (
@@ -89,8 +100,8 @@ const ButtonWrapper = styled.button`
   text-align: center;
   color: ${({ $isOutline, color }) => ($isOutline ? color : "white")};
   height: 36px;
-  width: ${({ $fullwidth }) => ($fullwidth ? "100%" : "auto")}; /* Fixed */
-  padding: 0 8px;
+  width: ${({ $fullwidth }) => ($fullwidth ? "100%" : "auto")};
+  padding: 0 12px;
   background-color: ${({ $isOutline, color }) =>
     $isOutline ? "transparent" : color};
   border: ${({ $isOutline, color }) =>
@@ -98,16 +109,24 @@ const ButtonWrapper = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s, opacity 0.3s;
+  font-size: 14px;
+  font-weight: 500;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
 const Ripple = styled.span`
   position: absolute;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.6);
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  left: ${(props) => props.x}px;
-  top: ${(props) => props.y}px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  left: ${({ x }) => x}px;
+  top: ${({ y }) => y}px;
   transform: scale(0);
   animation: ${rippleEffect} 0.6s linear;
 `;
