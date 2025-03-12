@@ -5,12 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Avatar from "../../assets/images/avatar.png";
 import LogoutModal from "../../components/Modals/LogoutModal";
 import { setLogoutModal } from "../../store/slices/modalSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function UserInformation() {
   // const userStore = useUser
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  console.log("user", user);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -28,15 +29,35 @@ export default function UserInformation() {
 
           <div className="user-info">
             <div>Hudud</div>
-            <div>{user.region_id ? user.region_id : "Mavjud emas"}</div>
+            <div>{user.region ? user.region : "Mavjud emas"}</div>
           </div>
           <div className="user-info">
             <div>Premium</div>
-            <div>{user.region_id ? user.region_id : "Mavjud emas"}</div>
+
+            {/* <div v-if="userStore.user.is_premium === true">{{ $t('infinity') }}</div>
+            <div v-else>{{ userStore.user.is_premium }} {{ $t('file') }}</div> */}
+            {user.is_premium ? (
+              <div>
+                {user.premium_expiration_date == true
+                  ? "infinity"
+                  : `until_date ${user.premium_expiration_date}`}
+              </div>
+            ) : (
+              <div>Not Available</div>
+            )}
           </div>
           <div className="user-info">
             <div>Prime</div>
-            <div>{user.region_id ? user.region_id : "Mavjud emas"}</div>
+
+            {user.is_prime ? (
+              <div>
+                {user.prime_expiration_date === true
+                  ? "infinity"
+                  : `until_date ${user.prime_expiration_date}`}
+              </div>
+            ) : (
+              <div>Not Available</div>
+            )}
           </div>
 
           <div className="user-info">
@@ -47,7 +68,11 @@ export default function UserInformation() {
           </div>
         </div>
         <div className="actions-group">
-          <BaseButton color="primary" fullwidth={true}>
+          <BaseButton
+            onClick={() => navigate("/profile/edit-user-information")}
+            color="primary"
+            fullwidth={true}
+          >
             Edit
           </BaseButton>
           <BaseButton

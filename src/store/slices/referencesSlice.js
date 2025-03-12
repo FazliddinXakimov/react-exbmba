@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getBanners,
+  getRegions,
   getSelections,
   getSubjects,
   getTestTypes,
@@ -16,9 +17,11 @@ const initialState = {
   englishTests: [],
   olympicTests: [],
   subjects: [],
+  mainSubjects: [],
   topBanners: [],
   middleBanners: [],
   middleBelowBanners: [],
+  regions: [],
   loading: false,
   error: null,
 };
@@ -92,9 +95,24 @@ const referencesSlice = createSlice({
         state.loading = false;
         if (action.payload.apiType === SUBJECT_API_TYPES.SUBJECTS) {
           state.subjects = action.payload.response;
+        } else if (action.payload.apiType === SUBJECT_API_TYPES.MAIN_SUBJECTS) {
+          state.mainSubjects = action.payload.response;
         }
       })
       .addCase(getSubjects.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // GET_REGIONS
+      .addCase(getRegions.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getRegions.fulfilled, (state, action) => {
+        state.loading = false;
+        state.regions = action.payload;
+      })
+      .addCase(getRegions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

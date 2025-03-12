@@ -31,7 +31,7 @@ class UserService {
     return response.data;
   }
 
-  async updateUser(id, data) {
+  async updateUser({ id, data }) {
     const response = await axios.patch(`/users/${id}/`, data);
     return response.data;
   }

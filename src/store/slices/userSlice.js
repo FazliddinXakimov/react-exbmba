@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getLeaders, getMe, login } from "../actions/userActions";
+import {
+  getLeaders,
+  getMe,
+  login,
+  refreshToken,
+  updateUser,
+} from "../actions/userActions";
 import { setAccessToken, setRefreshToken } from "../../utils/localeStorages";
 
 const initialState = {
@@ -67,6 +73,38 @@ const userSlice = createSlice({
         state.leaders = { ...action.payload };
       })
       .addCase(getLeaders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //refreshToken
+      .addCase(refreshToken.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload.access) {
+          setAccessToken(action.payload.access);
+          state.isLoggedIn = true;
+        } else {
+          state.isLoggedIn = false;
+        }
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isLoggedIn = false;
+      })
+      //updateUser
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

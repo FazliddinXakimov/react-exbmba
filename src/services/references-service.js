@@ -7,17 +7,26 @@ class ReferenceService {
   }
 
   async getSelections(params) {
-    const response = await axios.get("/references/selections", { params });
+    const response = await axios.get("/references/selections", {
+      is_showing: true,
+      ...params,
+    });
     return response.data;
   }
 
   async getTestTypes(params) {
-    const response = await axios.get("/references/test-types", { params });
+    const response = await axios.get("/references/test-types", {
+      is_showing: true,
+      ...params,
+    });
     return response.data;
   }
 
   async getSubjects(params) {
-    const response = await axios.get("/references/subjects", { params });
+    const response = await axios.get("/references/subjects", {
+      is_showing: true,
+      ...params,
+    });
     return response.data;
   }
 

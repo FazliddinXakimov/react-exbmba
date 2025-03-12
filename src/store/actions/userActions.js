@@ -60,3 +60,29 @@ export const logout = createAsyncThunk(
     }
   }
 );
+
+export const refreshToken = createAsyncThunk(
+  "user/REFRESH_TOKEN",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userService.refreshToken({
+        refresh: getRefreshToken(),
+      });
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Refresh token failed");
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  "user/UPDATE_USER",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userService.updateUser(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Update user failed");
+    }
+  }
+);

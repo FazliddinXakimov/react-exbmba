@@ -6,7 +6,7 @@ const WrapperDiv = styled.div`
   padding-right: 10px;
   padding-top: calc(10px + var(--navbar-height));
   padding-bottom: var(--bottom-navigation-height);
-
+  min-width: 320px;
   max-width: 968px;
   margin: 0 auto;
 `;

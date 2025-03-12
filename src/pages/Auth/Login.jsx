@@ -2,25 +2,20 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import BaseInput from "../../components/BaseComponents/BaseInput";
-import styled from "styled-components";
-import BaseButton from "../../components/BaseComponents/BaseButton";
-import { Link, useNavigate } from "react-router-dom";
-import { getMe, login } from "../../store/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import BaseInput from "../../components/BaseComponents/BaseInput";
+import BaseButton from "../../components/BaseComponents/BaseButton";
+import { getMe, login } from "../../store/actions/userActions";
 
-const schema = yup
-  .object({
-    phone: yup
-      .string()
-      .matches(/^\+998 \d{2} \d{3} \d{2} \d{2}$/, "Invalid phone number format")
-      .required("Phone number is required"),
-    password: yup
-      .string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-  })
-  .required();
+const schema = yup.object({
+  phone: yup
+    .string()
+    .matches(/^\+998 \d{2} \d{3} \d{2} \d{2}$/, "Invalid phone number format")
+    .required("Phone number is required"),
+  password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+}).required();
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -28,30 +23,28 @@ export default function Login() {
   const navigate = useNavigate();
 
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors, isSubmitted },
-    setValue,
-    watch,
-    trigger,
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      phone: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (data) => {
-    const exportData = {
-      phone: data.phone.split(" ").join(""),
+    const formattedData = {
+      phone: data.phone.replace(/\s+/g, ""),
       password: data.password,
     };
 
-    const response = await dispatch(login(exportData));
+    const response = await dispatch(login(formattedData));
 
     if (login.fulfilled.match(response)) {
       await dispatch(getMe());
       navigate("/", { replace: true });
-      //
-    } else if (login.rejected.match(response)) {
-      //
     }
   };
 
@@ -64,30 +57,21 @@ export default function Login() {
           Sign up
         </Link>
       </div>
-      <div>{loading}</div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <BaseInput
           label="Phone"
           name="phone"
           type="tel"
-          register={register}
+          control={control}
           error={errors.phone}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
         />
-
         <BaseInput
           label="Password"
           name="password"
           type="password"
-          register={register}
+          control={control}
           error={errors.password}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
         />
 
         <div className="forgot-password">
@@ -95,7 +79,12 @@ export default function Login() {
             Forgot password?
           </Link>
         </div>
-        <BaseButton isLoading={loading} className="submit-btn" type="submit">
+
+        <BaseButton
+          isLoading={isSubmitting || loading}
+          className="submit-btn"
+          type="submit"
+        >
           Login
         </BaseButton>
       </form>
@@ -112,25 +101,22 @@ const LoginWrapper = styled.div`
     text-align: center;
     margin-bottom: 10px;
   }
+
   .to-register {
     text-align: center;
     margin-bottom: 20px;
     font-size: var(--font-size-md);
     a {
       color: var(--blue-color);
-      cursor: pointer;
       text-decoration: none;
     }
   }
 
   .forgot-password {
     color: var(--blue-color);
-  }
-
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
+    display: block;
+    text-align: right;
+    margin-top: 10px;
   }
 
   button {

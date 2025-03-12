@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import React, { lazy, Suspense } from "react";
+import GlobalLoader from "./components/GlobalLoader"; // Import the new loader
 
 const Home = lazy(() => import("./pages/Home"));
 const Leaders = lazy(() => import("./pages/Leaders/index"));
@@ -11,13 +12,16 @@ const Tests = lazy(() => import("./pages/Tests/index"));
 const Login = lazy(() => import("./pages/Auth/Login"));
 const Register = lazy(() => import("./pages/Auth/Register"));
 const UserResults = lazy(() => import("./pages/Profile/UserResults"));
-const UserSubscriptions = lazy(
-  () => import("./pages/Profile/UserSubscriptions")
+const UserSubscriptions = lazy(() =>
+  import("./pages/Profile/UserSubscriptions")
+);
+const EditUserInformation = lazy(() =>
+  import("./pages/Profile/EditUserInformation")
 );
 
 export default function AppRoutes() {
   return (
-    <Suspense fallback={<h1>Loading...</h1>}>
+    <Suspense fallback={<GlobalLoader />}>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
@@ -25,6 +29,10 @@ export default function AppRoutes() {
           <Route
             path="/profile/user-information"
             element={<UserInformation />}
+          />
+          <Route
+            path="/profile/edit-user-information"
+            element={<EditUserInformation />}
           />
           <Route path="/profile/user-referrals" element={<UserReferrals />} />
           <Route path="/profile/user-results" element={<UserResults />} />

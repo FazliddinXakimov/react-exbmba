@@ -2,10 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import BaseInput from "../../components/BaseComponents/BaseInput";
 import styled from "styled-components";
-import BaseButton from "../../components/BaseComponents/BaseButton";
 import { Link } from "react-router-dom";
+import BaseInput from "../../components/BaseComponents/BaseInput";
+import BaseButton from "../../components/BaseComponents/BaseButton";
 import BaseSelect from "../../components/BaseComponents/BaseSelect";
 
 const schema = yup
@@ -23,19 +23,15 @@ const schema = yup
       .required("Password is required"),
     passwordConfirm: yup
       .string()
-      .oneOf([yup.ref("password"), null], "Password must match")
+      .oneOf([yup.ref("password"), null], "Passwords must match")
       .required("Password confirmation is required"),
   })
   .required();
 
 export default function Register() {
   const {
-    register,
     handleSubmit,
-    formState: { errors, isSubmitted },
-    setValue,
-    watch,
-    trigger,
+    formState: { errors },
     control,
   } = useForm({
     resolver: yupResolver(schema),
@@ -51,58 +47,40 @@ export default function Register() {
   ];
 
   return (
-    <LoginWrapper>
-      <div className="login-title">Welcome to our Platform!</div>
-      <div className="to-login">
+    <RegisterWrapper>
+      <h2 className="register-title">Welcome to our Platform!</h2>
+      <p className="to-login">
         Already have an account?{" "}
         <Link to="/auth/login" className="to-register">
           Sign in
         </Link>
-      </div>
+      </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <BaseInput
           label="Phone"
           name="phone"
           type="tel"
-          register={register}
+          control={control}
           error={errors.phone}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
         />
         <BaseInput
           label="First Name"
           name="firstName"
-          register={register}
+          control={control}
           error={errors.firstName}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
         />
         <BaseInput
           label="Last Name"
           name="lastName"
-          register={register}
+          control={control}
           error={errors.lastName}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
         />
 
         <BaseSelect
           name="region"
           label="Region"
-          getOptionValue={(option) => option.value}
-          getOptionLabel={(option) => option.label}
           options={regionOptions}
           control={control}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
           error={errors.region}
         />
 
@@ -110,35 +88,29 @@ export default function Register() {
           label="Password"
           name="password"
           type="password"
-          register={register}
+          control={control}
           error={errors.password}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
         />
         <BaseInput
           label="Password Confirmation"
           name="passwordConfirm"
           type="password"
-          register={register}
+          control={control}
           error={errors.passwordConfirm}
-          setValue={setValue}
-          watch={watch}
-          trigger={trigger}
-          isSubmitted={isSubmitted}
         />
+
         <BaseButton className="submit-btn" type="submit">
           Register
         </BaseButton>
       </form>
-    </LoginWrapper>
+    </RegisterWrapper>
   );
 }
 
-const LoginWrapper = styled.div`
+const RegisterWrapper = styled.div`
   margin-top: 20px;
-  .login-title {
+
+  .register-title {
     font-weight: 600;
     font-size: var(--font-size-lg);
     text-align: center;
@@ -151,15 +123,11 @@ const LoginWrapper = styled.div`
     font-size: var(--font-size-md);
     a {
       color: var(--blue-color);
-      cursor: pointer;
       text-decoration: none;
+      font-weight: bold;
     }
   }
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-  }
+
   button {
     width: 100%;
     margin-top: 30px;

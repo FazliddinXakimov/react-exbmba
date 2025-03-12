@@ -52,3 +52,15 @@ export const getSubjects = createAsyncThunk(
     }
   }
 );
+
+export const getRegions = createAsyncThunk(
+  "references/GET_REGIONS",
+  async (params, { rejectWithValue }) => {
+    try {
+      const response = await ReferencesService.getRegions(params);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to fetch regions");
+    }
+  }
+);

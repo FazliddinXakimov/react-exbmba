@@ -87,7 +87,7 @@ const NavItem = styled(Link)`
   font-weight: 600;
 
   img {
-    height: 24px;
+    height: 18px;
     transition: transform 0.3s ease;
   }
 

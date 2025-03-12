@@ -5,20 +5,20 @@ import rootReducer from "./slices";
 
 const userTransform = createTransform(
   (inboundState) => {
-    // Only persist selected properties
     return {
       user: inboundState.user,
+      isLoggedIn: inboundState.isLoggedIn, // Ensure isLoggedIn is persisted
     };
   },
   (outboundState) => outboundState,
-  { whitelist: ["user"] }
+  { whitelist: ["user", "isLoggedIn"] }
 );
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user"], // Only persist "user"
-  transforms: [userTransform], // Apply the transform to "user"
+  whitelist: ["user", "isLoggedIn"], // Ensure isLoggedIn is included
+  transforms: [userTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
