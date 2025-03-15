@@ -8,6 +8,7 @@ import {
   deleteRefreshToken,
 } from "../utils/localeStorages";
 import { refreshToken } from "../store/actions/userActions";
+import i18n from "@/i18n";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL, // Replace with your API base URL
@@ -18,6 +19,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = getAccessToken(); // Fetch access token
+
+    config.headers["lang"] = i18n.language || "ru";
 
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;

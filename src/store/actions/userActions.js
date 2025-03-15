@@ -77,16 +77,24 @@ export const refreshToken = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "user/UPDATE_USER",
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue, getState }) => {
     try {
-      const response = await userService.updateUser(data);
+      const state = getState();
+      const userId = state.user?.user?.id;
+
+      console.log("data", data);
+
+      if (!userId) {
+        throw new Error("User ID not found");
+      }
+
+      const response = await userService.updateUser({ data: data, id: userId });
       return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Update user failed");
     }
   }
 );
-
 export const getReferrals = createAsyncThunk(
   "user/GET_REFERRALS",
   async (data, { rejectWithValue }) => {

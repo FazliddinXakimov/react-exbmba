@@ -9,6 +9,8 @@ import Pagination from "../../components/Pagination";
 import BaseButton from "../../components/BaseComponents/BaseButton";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import InviteFriendsModal from "../../components/Modals/InviteFriendsModal";
+import { setInviteFriendsModal } from "../../store/slices/modalSlice";
 
 export default function UserReferrals() {
   const dispatch = useDispatch();
@@ -62,6 +64,7 @@ export default function UserReferrals() {
         color="primary"
         isOutline
         fullwidth
+        onClick={() => dispatch(setInviteFriendsModal(true))}
       >
         Invite Friends
       </BaseButton>
@@ -91,6 +94,12 @@ export default function UserReferrals() {
       {totalPages > 1 && (
         <Pagination page={page} setPage={setPage} totalPages={totalPages} />
       )}
+
+      {totalCount / pageSize > 1 && (
+        <Pagination page={page} setPage={setPage} count={totalCount} />
+      )}
+
+      <InviteFriendsModal />
     </UserReferralWrapper>
   );
 }

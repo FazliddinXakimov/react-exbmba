@@ -38,7 +38,7 @@ const UserResults = () => {
   const myResults = useSelector((state) => state.test.myResults) || [];
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 5;
 
   async function fetchData() {
     setLoading(true);

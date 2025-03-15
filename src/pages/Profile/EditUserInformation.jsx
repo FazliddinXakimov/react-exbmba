@@ -11,6 +11,8 @@ import Avatar from "../../assets/images/avatar.png";
 import Camera from "../../assets/images/camera.png";
 import { getRegions } from "../../store/actions/referencesActions";
 import { getMe, updateUser } from "../../store/actions/userActions";
+import { setSuccessModal } from "../../store/slices/modalSlice";
+import { useTranslation } from "react-i18next";
 
 const schema = yup
   .object({
@@ -28,6 +30,7 @@ const EditUser = () => {
 
   const [previewImage, setPreviewImage] = useState(user?.image || Avatar);
   const fileInputRef = useRef(null);
+  const { t } = useTranslation();
 
   const {
     control,
@@ -63,8 +66,10 @@ const EditUser = () => {
   }, [dispatch]);
 
   const onSubmit = async (data) => {
-    await dispatch(updateUser({ id: user.id, data }));
+    await dispatch(updateUser(data));
     await dispatch(getMe());
+
+    dispatch(setSuccessModal({ modal: true, text: t("successfully_changed") }));
   };
 
   return (
@@ -148,7 +153,7 @@ const EditUserWrapper = styled.div`
     height: 80px;
     width: 80px;
     border-radius: 50%;
-    padding: 5px;
+    /* padding: 5px; */
     border: 1px solid var(--primary-color);
   }
 

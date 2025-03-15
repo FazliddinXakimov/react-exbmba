@@ -85,7 +85,7 @@ const NavItem = styled(Link)`
   font-size: var(--font-size-sm);
   transition: background-color 0.3s ease, transform 0.3s ease;
   font-weight: 600;
-
+  cursor: pointer;
   img {
     height: 18px;
     transition: transform 0.3s ease;

@@ -14,8 +14,18 @@ i18n
       kr: { translation: kr },
       ru: { translation: ru },
     },
-    fallbackLng: "ru",
-    debug: true,
+    fallbackLng: "ru", // Default to Russian if not detected
+    supportedLngs: ["uz", "kr", "ru"], // Only allow these languages
+    nonExplicitSupportedLngs: true, // Ignore "-US" in "en-US"
+    detection: {
+      order: ["localStorage", "navigator"], // Try localStorage first
+      caches: ["localStorage"], // Save selected language in localStorage
+    },
   });
+
+// If detected language is not in supportedLngs, change to fallbackLng
+if (!["uz", "kr", "ru"].includes(i18n.language)) {
+  i18n.changeLanguage("ru");
+}
 
 export default i18n;

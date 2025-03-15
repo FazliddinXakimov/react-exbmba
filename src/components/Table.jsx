@@ -81,6 +81,7 @@ const Spinner = styled.div`
 const StyledTableContainer = styled.div`
   width: 100%;
   overflow-x: auto;
+  border-radius: var(--radius-lg);
 `;
 
 const StyledTable = styled.table`

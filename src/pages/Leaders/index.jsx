@@ -25,7 +25,6 @@ export default function Leaders() {
   const [filters, setFilters] = useState({}); // Store applied filters
 
   const pageSize = 10;
-  const totalPages = Math.ceil(totalCount / pageSize);
 
   const columns = [
     {
@@ -130,8 +129,8 @@ export default function Leaders() {
 
         <Table columns={columns} data={leaders} loading={loading} />
 
-        {totalPages > 1 && (
-          <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+        {totalCount / pageSize > 1 && (
+          <Pagination page={page} setPage={setPage} count={totalCount} />
         )}
       </LeadersWrapper>
 

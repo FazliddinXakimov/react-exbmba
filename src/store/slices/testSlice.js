@@ -25,7 +25,6 @@ const testSlice = createSlice({
       })
       .addCase(getMyResults.fulfilled, (state, action) => {
         state.loading = false;
-        console.log("actions", action.payload);
         state.myResults = { ...action.payload };
       })
       .addCase(getMyResults.rejected, (state, action) => {

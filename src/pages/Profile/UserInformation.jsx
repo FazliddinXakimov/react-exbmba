@@ -22,6 +22,7 @@ export default function UserInformation() {
               src={user.image ? user.image : Avatar}
               className="user-avatar"
               alt="user image"
+              loading="lazy"
             />
 
             <div className="user-name">{user.full_name}</div>
@@ -115,7 +116,7 @@ const UserInformationWrapper = styled.div`
   .user-avatar {
     width: 60px;
     height: 60px;
-    padding: 4px;
+    /* padding: 4px;x */
     border-radius: 50%;
     border: 1px solid var(--slate-color);
   }
