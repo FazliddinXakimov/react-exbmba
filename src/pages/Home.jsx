@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import TopBanners from "../components/TopBanners";
 import MiddleBanners from "../components/MiddleBanners";
+// import { useTranslation } from "react-i18next";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,7 +12,6 @@ import {
 } from "../store/actions/referencesActions";
 import styled from "styled-components";
 import InfoImg from "../assets/images/info.png";
-import { Link } from "react-router-dom";
 import {
   BANNER_TYPES,
   SELECTION_API_TYPES,
@@ -31,6 +31,12 @@ export default function Home() {
   const middleBelowBanners = useSelector(
     (state) => state.references.middleBelowBanners
   );
+
+  // const { t, i18n } = useTranslation();
+
+  // const changeLanguage = (lang) => {
+  //   i18n.changeLanguage(lang);
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,7 +109,6 @@ export default function Home() {
   return (
     <>
       <TopBanners banners={topBanners} />
-      <Link to="/auth/login">HIIII</Link>
 
       <TARIFF_LIST_WRAPPER>
         <div className="title">

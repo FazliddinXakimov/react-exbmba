@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBanners } from "../actions/referencesActions";
+import { getMyResults } from "../actions/testActions";
 
-const initialState = { banners: [] };
+const initialState = {
+  myResults: {
+    count: 0,
+    results: [],
+  },
+};
 
-const referencesSlice = createSlice({
-  name: "references",
+const testSlice = createSlice({
+  name: "test",
   initialState,
   reducers: {
     // increment: (state) => {
@@ -13,12 +18,22 @@ const referencesSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(getBanners.fulfilled, (state, action) => {
-      state.banners = action.payload;
-    });
-    // .addCase();
+    builder
+      .addCase(getMyResults.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getMyResults.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("actions", action.payload);
+        state.myResults = { ...action.payload };
+      })
+      .addCase(getMyResults.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
-// export const {} = referencesSlice.actions;
-export default referencesSlice.reducer;
+// export const {} = testSlice.actions;
+export default testSlice.reducer;

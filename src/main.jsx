@@ -6,6 +6,7 @@ import { store, persistor } from "./store";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import "./assets/styles/global.scss"; // Import global styles
+import "./i18n"; // Import translation setup
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>

@@ -86,3 +86,27 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
+
+export const getReferrals = createAsyncThunk(
+  "user/GET_REFERRALS",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userService.getReferrals(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Update user failed");
+    }
+  }
+);
+
+export const getReferralStatistics = createAsyncThunk(
+  "user/GET_REFERRAL_STATISTICS",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await userService.getReferralsStatistics(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Update user failed");
+    }
+  }
+);

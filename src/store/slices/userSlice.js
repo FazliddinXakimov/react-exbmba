@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getLeaders,
   getMe,
+  getReferrals,
+  getReferralStatistics,
   login,
   refreshToken,
   updateUser,
@@ -13,6 +15,16 @@ const initialState = {
   leaders: {
     results: [],
     count: 0,
+  },
+  referrals: {
+    results: [],
+    count: 0,
+  },
+  referralStatistics: {
+    total_referrals: 0,
+    total_bonus: 0,
+    total_active_referrals: 0,
+    total_available_bonus: 0,
   },
   isLoggedIn: false,
   loading: false,
@@ -105,6 +117,32 @@ const userSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //get referrals
+      .addCase(getReferrals.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getReferrals.fulfilled, (state, action) => {
+        state.loading = false;
+        state.referrals = { ...action.payload };
+      })
+      .addCase(getReferrals.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //
+      .addCase(getReferralStatistics.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getReferralStatistics.fulfilled, (state, action) => {
+        state.loading = false;
+        state.referralStatistics = { ...action.payload };
+      })
+      .addCase(getReferralStatistics.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

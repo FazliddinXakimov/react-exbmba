@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const ScrollContainer = styled.div`
@@ -8,10 +8,10 @@ const ScrollContainer = styled.div`
   margin-top: 10px;
   margin-bottom: 20px;
   white-space: nowrap;
-  scrollbar-width: none; /* Hides scrollbar in Firefox */
+  scrollbar-width: none;
   text-align: center;
   &::-webkit-scrollbar {
-    display: none; /* Hides scrollbar in Chrome, Safari, Edge */
+    display: none;
   }
 `;
 
@@ -34,27 +34,8 @@ const SlideItem = styled.div`
 const ScrollableSlider = () => {
   const scrollRef = useRef(null);
   const itemsRef = useRef([]);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const navigate = useNavigate();
-
-  const scrollToCenter = (index, routePath) => {
-    if (scrollRef.current && itemsRef.current[index]) {
-      const container = scrollRef.current;
-      const item = itemsRef.current[index];
-
-      const containerCenter = container.offsetWidth / 2;
-      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-
-      container.scrollTo({
-        left: itemCenter - containerCenter,
-        behavior: "smooth",
-      });
-
-      setSelectedIndex(index);
-
-      navigate(routePath, { replace: true });
-    }
-  };
+  const location = useLocation();
 
   const sections = [
     {
@@ -74,6 +55,51 @@ const ScrollableSlider = () => {
       title: "User Subscriptions",
     },
   ];
+
+  // Get the index based on the current route
+  const getCurrentIndex = () => {
+    return sections.findIndex((section) => section.route === location.pathname);
+  };
+
+  const [selectedIndex, setSelectedIndex] = React.useState(getCurrentIndex());
+
+  useEffect(() => {
+    // Update selected index when the route changes
+    const currentIndex = getCurrentIndex();
+    setSelectedIndex(currentIndex);
+
+    // Scroll to the selected item
+    if (scrollRef.current && itemsRef.current[currentIndex]) {
+      const container = scrollRef.current;
+      const item = itemsRef.current[currentIndex];
+
+      const containerCenter = container.offsetWidth / 2;
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+
+      container.scrollTo({
+        left: itemCenter - containerCenter,
+        behavior: "smooth",
+      });
+    }
+  }, [location.pathname]); // Runs when the URL changes
+
+  const scrollToCenter = (index, routePath) => {
+    if (scrollRef.current && itemsRef.current[index]) {
+      const container = scrollRef.current;
+      const item = itemsRef.current[index];
+
+      const containerCenter = container.offsetWidth / 2;
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+
+      container.scrollTo({
+        left: itemCenter - containerCenter,
+        behavior: "smooth",
+      });
+
+      setSelectedIndex(index);
+      navigate(routePath, { replace: true });
+    }
+  };
 
   return (
     <ScrollContainer ref={scrollRef}>
