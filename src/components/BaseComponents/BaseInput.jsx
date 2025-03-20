@@ -84,6 +84,7 @@ const InputWrapper = styled.div`
     border-radius: 5px;
     outline: none;
     width: 100%;
+    font-size: 12px;
   }
 
   input:focus {

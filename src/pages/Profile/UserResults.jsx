@@ -54,7 +54,7 @@ const UserResults = () => {
   return (
     <>
       <Table columns={columns} data={myResults.results} loading={loading} />
-      {myResults.count / pageSize > 1 && (
+      {myResults.count / pageSize > 1 && !loading && (
         <Pagination page={page} setPage={setPage} count={myResults.count} />
       )}
     </>

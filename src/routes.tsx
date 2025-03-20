@@ -12,12 +12,14 @@ const Tests = lazy(() => import("./pages/Tests/index"));
 const Login = lazy(() => import("./pages/Auth/Login"));
 const Register = lazy(() => import("./pages/Auth/Register"));
 const UserResults = lazy(() => import("./pages/Profile/UserResults"));
-const UserSubscriptions = lazy(() =>
-  import("./pages/Profile/UserSubscriptions")
+const UserSubscriptions = lazy(
+  () => import("./pages/Profile/UserSubscriptions")
 );
-const EditUserInformation = lazy(() =>
-  import("./pages/Profile/EditUserInformation")
+const EditUserInformation = lazy(
+  () => import("./pages/Profile/EditUserInformation")
 );
+
+const UserCards = lazy(() => import("./pages/Profile/UserCards"));
 
 export default function AppRoutes() {
   return (
@@ -36,6 +38,8 @@ export default function AppRoutes() {
           />
           <Route path="/profile/user-referrals" element={<UserReferrals />} />
           <Route path="/profile/user-results" element={<UserResults />} />
+          <Route path="/profile/user-cards" element={<UserCards />} />
+
           <Route
             path="/profile/user-subscriptions"
             element={<UserSubscriptions />}

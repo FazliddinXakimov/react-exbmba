@@ -1,35 +1,29 @@
 import React, { useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-
-const ScrollContainer = styled.div`
-  width: 100%;
-  overflow-x: auto;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  white-space: nowrap;
-  scrollbar-width: none;
-  text-align: center;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const SlideItem = styled.div`
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 10px;
-  padding: 6px 8px;
-  background: ${(props) =>
-    props.selected ? "var(--primary-color)" : "var(--slate-color)"};
-  color: ${(props) => (props.selected ? "white" : "black")};
-  border: 1px solid
-    ${(props) => (props.selected ? "transparent" : "var(--slate-color)")};
-  font-weight: 500;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: background 0.3s ease;
-`;
+const sections = [
+  {
+    route: "/profile/user-information",
+    title: "user_data",
+  },
+  {
+    route: "/profile/user-referrals",
+    title: "referral_balance",
+  },
+  {
+    route: "/profile/user-results",
+    title: "my_results",
+  },
+  {
+    route: "/profile/user-results",
+    title: "my_cards",
+  },
+  {
+    route: "/profile/user-subscriptions",
+    title: "my_subscriptions",
+  },
+];
 
 const ScrollableSlider = () => {
   const scrollRef = useRef(null);
@@ -37,30 +31,12 @@ const ScrollableSlider = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const sections = [
-    {
-      route: "/profile/user-information",
-      title: "User Information",
-    },
-    {
-      route: "/profile/user-referrals",
-      title: "User Referrals",
-    },
-    {
-      route: "/profile/user-results",
-      title: "User Results",
-    },
-    {
-      route: "/profile/user-subscriptions",
-      title: "User Subscriptions",
-    },
-  ];
+  const { t } = useTranslation();
 
   // Get the index based on the current route
   const getCurrentIndex = () => {
     return sections.findIndex((section) => section.route === location.pathname);
   };
-
   const [selectedIndex, setSelectedIndex] = React.useState(getCurrentIndex());
 
   useEffect(() => {
@@ -110,7 +86,7 @@ const ScrollableSlider = () => {
           onClick={() => scrollToCenter(index, section.route)}
           selected={selectedIndex === index}
         >
-          {section.title}
+          {t(section.title)}
         </SlideItem>
       ))}
     </ScrollContainer>
@@ -118,3 +94,32 @@ const ScrollableSlider = () => {
 };
 
 export default ScrollableSlider;
+
+const ScrollContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  scrollbar-width: none;
+  text-align: center;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const SlideItem = styled.div`
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  padding: 6px 8px;
+  background: ${(props) =>
+    props.selected ? "var(--primary-color)" : "var(--slate-color)"};
+  color: ${(props) => (props.selected ? "white" : "black")};
+  border: 1px solid
+    ${(props) => (props.selected ? "transparent" : "var(--slate-color)")};
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.3s ease;
+`;

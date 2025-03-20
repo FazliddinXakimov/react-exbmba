@@ -14,7 +14,7 @@ const BaseSelect = ({
   defaultValue,
   isDisabled = false,
   isLoading = false,
-  isClearable = false,
+  isClearable = true,
   isRtl = false,
   isSearchable = false,
   defaultMenuIsOpen = false,
@@ -93,6 +93,14 @@ const customStyles = {
     ...provided,
     color: "var(--slate-color)",
     height: "36px",
+  }),
+  option: (provided) => ({
+    ...provided,
+    fontSize: "14px", // Adjust font size for dropdown options
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    fontSize: "12px", // Adjust font size for the selected value
   }),
 };
 

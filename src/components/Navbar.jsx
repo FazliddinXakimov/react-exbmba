@@ -11,7 +11,6 @@ const Navbar = () => {
   const { i18n } = useTranslation();
   const dispatch = useDispatch();
   const currentLanguage = LANGUAGES.find((lang) => lang.code === i18n.language);
-  console.log("uc", currentLanguage);
 
   return (
     <NavbarContainer>

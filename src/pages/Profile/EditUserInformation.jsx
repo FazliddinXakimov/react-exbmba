@@ -140,7 +140,7 @@ const EditUserWrapper = styled.div`
   }
 
   h4 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   .avatar-wrapper {

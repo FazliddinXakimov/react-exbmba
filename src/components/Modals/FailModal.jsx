@@ -17,7 +17,7 @@ const FailModal = () => {
       size={"sm"}
     >
       <FailModalWrapper>
-        <img src={FailImage} alt="check-image" />
+        <img src={FailImage} alt="fail-image" />
         <div className="alert-text">{failModalText}</div>
       </FailModalWrapper>
     </BaseModal>

@@ -2,6 +2,10 @@ import uzFlag from "../assets/logos/uz.png";
 import ruFlag from "../assets/logos/ru.png";
 import krFlag from "../assets/logos/qr.png";
 
+import PremiumIcon from '../assets/images/premium_icon.png'
+import PrimeIcon from '../assets/images/prime_icon.png'
+
+
 export const TARIFF_TYPES = {
   PRIME: {
     code: "prime",
@@ -56,3 +60,18 @@ export const LANGUAGES = [
     shortName: "QR",
   },
 ];
+
+export const SUBS_TYPE = {
+  PREMIUM: {
+    code: 'premium',
+    text: 'PREMIUM',
+    image: PremiumIcon,
+    error: 'premium_subscribe_is_not_exists',
+  },
+  PRIME: {
+    code: 'prime',
+    text: 'PRIME',
+    image: PrimeIcon,
+    error: 'prime_status_is_not_exists',
+  },
+}
